@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <cn.edu.neusoft.lgx.gametest.DrawingBoardSurfaceView
+        android:id="@+id/gameplayView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="365dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="560dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton_gameControl_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:onClick="OnButtonClick_up"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton_gameControl_down"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:srcCompat="@drawable/ic_gamecontrol_up" />
+
+    <ImageButton
+        android:id="@+id/imageButton_gameControl_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:onClick="OnButtonClick_left"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_gameConcrol_right"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:srcCompat="@drawable/ic_gamecontrol_left" />
+
+    <ImageButton
+        android:id="@+id/imageButton_gameConcrol_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:onClick="OnButtonClick_right"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_gameControl_left"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_gameControl_left"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_gameControl_left"
+        app:srcCompat="@drawable/ic_gamecontorl_right" />
+
+    <ImageButton
+        android:id="@+id/imageButton_gameControl_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:onClick="OnButtonClick_down"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton_gameControl_up"
+        app:layout_constraintStart_toStartOf="@+id/imageButton_gameControl_up"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton_gameControl_up"
+        app:srcCompat="@drawable/ic_gamecontrol_down" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="190dp" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline4">
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="慢" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="正常" />
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="快" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="得分："
+        app:layout_constraintBottom_toTopOf="@+id/gameplayView"
+        app:layout_constraintStart_toStartOf="@+id/gameplayView" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="时间："
+        app:layout_constraintBottom_toBottomOf="@+id/textViewTime"
+        app:layout_constraintEnd_toStartOf="@+id/textViewTime"
+        app:layout_constraintTop_toTopOf="@+id/textViewTime" />
+
+    <Button
+        android:id="@+id/button_GameStartOrStop"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="OnButtonClick_start"
+        android:text="开始"
+        android:textColor="#BA3030"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <TextView
+        android:id="@+id/textViewScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toTopOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/textViewTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        app:layout_constraintBottom_toTopOf="@+id/gameplayView"
+        app:layout_constraintEnd_toEndOf="@+id/gameplayView" />
+
+    <cn.edu.neusoft.lgx.gametest.DrawingBoardSurfaceView
+        android:id="@+id/previewView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_GameStartOrStop"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="0.558" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
