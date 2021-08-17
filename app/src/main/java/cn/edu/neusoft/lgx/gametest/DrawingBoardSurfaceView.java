@@ -21,7 +21,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private static final String TAG = "DrawingBoardSurfaceView";
     private static final int MESSAGE_UPDATA_UI = 0;
-    private static int num = 100;
+    private int num = 100;
+    private boolean initgame = false;
 
     Handler mHandler = new Handler() {
         @SuppressLint("HandlerLeak")
@@ -34,6 +35,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
                     generationTextView.setText(String.valueOf(data[1]));
                     if(mIsPaused.get()){
                         mButton.setText("开始");
+                        initgame = false;
                     }
                     break;
                 }
@@ -102,16 +104,27 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
         this.mButton = mButton;
     }
 
-    public int getLastMode(){
-        return creatures.getLastmode();}
+    public boolean isInitgame() {
+        return initgame;
+    }
+
+    public int[][] getLastMode(){
+        return creatures.getLastmode();
+    }
+
+    public void initGame(int num, int[][] mode) {
+        this.num = num;
+        initGame(new Creatures(num, mode));
+    }
 
     public void initGame() {
         initGame(new Creatures(num));
     }
 
     public void initGame(int num) {
-        DrawingBoardSurfaceView.num = num;
+        this.num = num;
         initGame(new Creatures(num));
+        textViewConnect();
     }
 
     private void initGame(Creatures c) {
@@ -126,7 +139,10 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
         Canvas canvas = mHolder.lockCanvas();
         draw(canvas, paint);
         mHolder.unlockCanvasAndPost(canvas);
+        initgame = true;
+    }
 
+    private void textViewConnect(){
         aliveHintTextView.setText(String.valueOf(creatures.getScore()));
         generationTextView.setText(String.valueOf(creatures.getGeneration()));
     }

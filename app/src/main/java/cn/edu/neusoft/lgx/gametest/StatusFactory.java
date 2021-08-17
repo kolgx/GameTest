@@ -75,6 +75,10 @@ public class StatusFactory {
         StatusFactory.NUM = NUM;
     }
 
+    public static int getNUM() {
+        return NUM;
+    }
+
     /**
      *L字型模板绘制二维矩阵
      * @param x 模板的横坐标

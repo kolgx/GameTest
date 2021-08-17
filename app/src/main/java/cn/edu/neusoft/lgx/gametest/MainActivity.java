@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         playview.setGenerationTextView(time);
         playview.setmButton(game);
 
+        preview = findViewById(R.id.previewView);
 
         //速度控制
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private void makeToast(String string, int time){
@@ -76,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
     }
     public void OnButtonClick_start(View view){
         if("开始".contentEquals(game.getText())){
-            playview.initGame(20);
+            if(!playview.isInitgame())
+                playview.initGame(20);
             game.setText("暂停");
             playview.continueGame();
             Log.e(TAG, "OnButtonClick_start: 开始" );
@@ -95,14 +98,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        handler.postDelayed(runnable, 1000);
+    }
+
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         public void run() {
             this.update();
-            /*handler.postDelayed(this, 500);// 间隔120秒*/
+            handler.postDelayed(this, 1000);// 间隔120秒
         }
         void update() {
-            playview.initGame(20);
+            if(playview.isInitgame())
+                preview.initGame(6,playview.getLastMode());
         }
     };
 }

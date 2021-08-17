@@ -2,9 +2,7 @@ package cn.edu.neusoft.lgx.gametest;
 
 
 import android.util.Log;
-import android.widget.RadioGroup;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import static android.content.ContentValues.TAG;
@@ -12,7 +10,7 @@ import static android.content.ContentValues.TAG;
 public class Creatures {
     private static final double INTIAL_SURVIVAL_RATE = 0.50;
 
-    private final int num;//边长
+    private int num = 100;//边长
     private int[][] background;//背景图
     private int[][] foreground;//前景图
     private int[][] fusion;//合成图
@@ -23,10 +21,21 @@ public class Creatures {
     private int score;//消行数
     private final Random random = new Random();
 
+    /**
+     * 方块形状预览
+     * @param mode 形状
+     */
+    public Creatures(int num, int[][] mode) {
+        if(num!=100&&num>5) this.num = num;
+        fusion = new int[num][num];
+        mapCpoy(fusion,mode);
+    }
+
     public Creatures(int num) {
-        this.num = num;
-        if(num!=100)
+        if(num!=100&&num>5) {
+            this.num = num;
             StatusFactory.setNUM(num);
+        }
         background = new int[num][num];
         foreground = new int[num][num];
         fusion = new int[num][num];
@@ -76,10 +85,10 @@ public class Creatures {
     public boolean gameDown() {
         y++;
         if (foremodeCreate()&&mapFusion(foreground, background)) {
-            Log.e(TAG, "gameDown: 坐标: "+x+":"+y+":"+r );
+            Log.e(TAG, "gameDown: 坐标: "+x+":"+y+":"+r+" "+num+":"+StatusFactory.getNUM() );
             return true;
         }
-        Log.e(TAG, "gameDown: 坐标: "+x+":"+y+":"+r );
+        Log.e(TAG, "gameDown: 坐标: "+x+":"+y+":"+r+" "+num+":"+StatusFactory.getNUM()  );
         return foremodeEnd();
     }
 
@@ -180,7 +189,7 @@ public class Creatures {
     private boolean foremodeEnd() {
         mode = lastmode;
         lastmode = random.nextInt(StatusFactory.SAMPLE_STATUS_ARRAY.length);
-        background = mapCpoy(fusion);
+        mapCpoy(background, fusion);
         backgroundChack();
         x = num / 2;
         y = 0;
@@ -214,8 +223,15 @@ public class Creatures {
         }
     }
 
-    private int[][] mapCpoy(int[][] map) {
-        return map;
+    /**
+     * 二维矩阵复制
+     * @param org 数据被替换的模板
+     * @param map 需要复印的数据
+     */
+    private void mapCpoy(int[][] org, int[][]map) {
+        for (int i = 0; i < org.length; i++) {
+            System.arraycopy(map[i], 0, org[i], 0, org[i].length);
+        }
     }
 
     /**
@@ -235,7 +251,7 @@ public class Creatures {
                 temporary[i][j] = fore[i][j] + back[i][j];
             }
         }
-        fusion = mapCpoy(temporary);
+        mapCpoy(fusion, temporary);
         generation++;
         return true;
     }
@@ -265,8 +281,8 @@ public class Creatures {
         return score;
     }
 
-    public int getLastmode() {
-        return lastmode;
+    public int[][] getLastmode() {
+        return StatusFactory.getSampleStatus(StatusFactory.SAMPLE_STATUS_ARRAY[lastmode], 2, 2, 1);
     }
 
 }
