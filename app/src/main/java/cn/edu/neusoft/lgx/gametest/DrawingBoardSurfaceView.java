@@ -202,7 +202,6 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
         canvas.drawRect(rect, paint);
     }
 
-
     class DrawThread implements Runnable {
         @SuppressWarnings("BusyWait")
         @Override
@@ -231,5 +230,89 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
                 }
             }
         }
+    }
+
+    public boolean control_up() {
+        Canvas canvas = null;
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        boolean statly = false;
+        boolean showstatly = false;
+
+        if (!mIsPaused.get()) {
+            statly = creatures.gameUp();
+            if (statly && mHolder.getSurface().isValid()) {
+                canvas = mHolder.lockCanvas();
+                if (canvas != null && canvas.getWidth() > 0) {
+                    draw(canvas, paint);
+                    showstatly = true;
+                }
+                mHolder.unlockCanvasAndPost(canvas);
+            }
+        }
+        return statly && showstatly;
+    }
+
+    public boolean control_down() {
+        Canvas canvas = null;
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        boolean statly = false;
+        boolean showstatly = false;
+
+        if (!mIsPaused.get()) {
+            statly = creatures.gameDown();
+            if (statly && mHolder.getSurface().isValid()) {
+                canvas = mHolder.lockCanvas();
+                if (canvas != null && canvas.getWidth() > 0) {
+                    draw(canvas, paint);
+                    showstatly = true;
+                }
+                mHolder.unlockCanvasAndPost(canvas);
+            }
+        }
+        return statly && showstatly;
+    }
+
+    public boolean control_left() {
+        Canvas canvas = null;
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        boolean statly = false;
+        boolean showstatly = false;
+
+        if (!mIsPaused.get()) {
+            statly = creatures.gameLeft();
+            if (statly && mHolder.getSurface().isValid()) {
+                canvas = mHolder.lockCanvas();
+                if (canvas != null && canvas.getWidth() > 0) {
+                    draw(canvas, paint);
+                    showstatly = true;
+                }
+                mHolder.unlockCanvasAndPost(canvas);
+            }
+        }
+        return statly && showstatly;
+    }
+
+    public boolean control_right() {
+        Canvas canvas = null;
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        boolean statly = false;
+        boolean showstatly = false;
+
+        if (!mIsPaused.get()) {
+            statly = creatures.gameRight();
+            if (statly && mHolder.getSurface().isValid()) {
+                canvas = mHolder.lockCanvas();
+                if (canvas != null && canvas.getWidth() > 0) {
+                    draw(canvas, paint);
+                    showstatly = true;
+                }
+                mHolder.unlockCanvasAndPost(canvas);
+            }
+        }
+        return statly && showstatly;
     }
 }

@@ -60,21 +60,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void makeToast(String string, int time){
-        Toast.makeText(MainActivity.this,string,time).show();
+    private void makeToast(String string, int time) {
+        Toast.makeText(MainActivity.this, string, time).show();
     }
 
-    public void OnButtonClick_up(View view){
-        makeToast("up",Toast.LENGTH_SHORT);
+    public void OnButtonClick_up(View view) {
+        if (playview.isInitgame() && !playview.control_up())
+            makeToast("up faild", Toast.LENGTH_SHORT);
     }
-    public void OnButtonClick_down(View view){
-        makeToast("down",Toast.LENGTH_SHORT);
+
+    public void OnButtonClick_down(View view) {
+        if (playview.isInitgame() && !playview.control_down()) {
+            makeToast("down faild", Toast.LENGTH_SHORT);
+        }
     }
-    public void OnButtonClick_left(View view){
-        makeToast("left",Toast.LENGTH_SHORT);
+
+    public void OnButtonClick_left(View view) {
+        if (playview.isInitgame() && !playview.control_left())
+            makeToast("left faild", Toast.LENGTH_SHORT);
     }
-    public void OnButtonClick_right(View view){
-        makeToast("right",Toast.LENGTH_SHORT);
+
+    public void OnButtonClick_right(View view) {
+        if (playview.isInitgame() && !playview.control_right())
+            makeToast("right faild", Toast.LENGTH_SHORT);
     }
     public void OnButtonClick_start(View view){
         if("开始".contentEquals(game.getText())){
