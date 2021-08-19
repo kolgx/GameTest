@@ -212,7 +212,7 @@ public class Creatures {
             }
             if(full){
                 for (int k = i; k - 1 >= 0; k--) {
-                    if (num >= 0) System.arraycopy(background[i - 1], 0, background[i], 0, num);
+                    if (num >= 0) System.arraycopy(background[k - 1], 0, background[k], 0, num);
                 }
                 for (int j = 0; j < num; j++)
                     background[0][j] = 0;
