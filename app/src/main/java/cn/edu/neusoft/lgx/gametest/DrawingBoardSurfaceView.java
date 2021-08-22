@@ -22,7 +22,6 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
     private static final String TAG = "DrawingBoardSurfaceView";
     private static final int MESSAGE_UPDATA_UI = 0;
     private int num = 100;
-    private boolean initgame = false;
 
     Handler mHandler = new Handler() {
         @SuppressLint("HandlerLeak")
@@ -33,10 +32,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
                     int[] data = (int[]) msg.obj;
                     aliveHintTextView.setText(""+data[0]);
                     generationTextView.setText(String.valueOf(data[1]));
-                    if(mIsPaused.get()){
-                        mButton.setText("开始");
-                        initgame = false;
-                    }
+                    if(data[2] == 1) mButton.setText("开始");
                     break;
                 }
                 default:
@@ -54,7 +50,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
     private float mGridUnit;
 
     private final AtomicLong sleepTime = new AtomicLong(1000);
-    private final AtomicBoolean mIsPaused = new AtomicBoolean(false);
+    private final AtomicBoolean mIsPaused = new AtomicBoolean(true);
 
     Context context;
     SurfaceHolder mHolder;
@@ -104,8 +100,8 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
         this.mButton = mButton;
     }
 
-    public boolean isInitgame() {
-        return initgame;
+    public boolean isGameStop() {
+        return mIsPaused.get();
     }
 
     public int[][] getLastMode(){
@@ -139,7 +135,6 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
         Canvas canvas = mHolder.lockCanvas();
         draw(canvas, paint);
         mHolder.unlockCanvasAndPost(canvas);
-        initgame = true;
     }
 
     private void textViewConnect(){
@@ -210,20 +205,22 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
             Canvas canvas = null;
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
+            boolean autoStop = false;
 
             while (!mIsPaused.get()) {
                 try {
-                    mIsPaused.set(!creatures.gameDown());
+                    autoStop = !creatures.gameDown();
                     if (mHolder.getSurface().isValid()) {
                         canvas = mHolder.lockCanvas();
                         if (canvas != null && canvas.getWidth() > 0) {
                             draw(canvas, paint);
                             Message msg = new Message();
-                            msg.obj = new int[]{creatures.getScore(), creatures.getGeneration()};
+                            msg.obj = new int[]{creatures.getScore(), creatures.getGeneration(), autoStop?1:0};
                             mHandler.sendMessage(msg);
                         }
                         mHolder.unlockCanvasAndPost(canvas);
                     }
+                    if(autoStop) mIsPaused.set(autoStop);
                     Thread.sleep(sleepTime.get());
                 } catch (InterruptedException e) {
                     e.printStackTrace();

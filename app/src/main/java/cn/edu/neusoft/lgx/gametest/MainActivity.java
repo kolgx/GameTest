@@ -18,7 +18,7 @@ import static android.content.ContentValues.TAG;
 public class MainActivity extends AppCompatActivity {
 
     private DrawingBoardSurfaceView playview,preview;
-    private Button game;
+    private Button game, gameRestart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         TextView time = findViewById(R.id.textViewTime);
         //绑定游戏进程按键
         game = findViewById(R.id.button_GameStartOrStop);
+        gameRestart = findViewById(R.id.button_GameRestart);
 
         playview = findViewById(R.id.gameplayView);
         playview.setAliveHintTextView(score);
@@ -65,29 +66,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnButtonClick_up(View view) {
-        if (playview.isInitgame() && !playview.control_up())
+        if (!playview.control_up())
             makeToast("up faild", Toast.LENGTH_SHORT);
     }
 
     public void OnButtonClick_down(View view) {
-        if (playview.isInitgame() && !playview.control_down()) {
+        if (!playview.control_down()) {
             makeToast("down faild", Toast.LENGTH_SHORT);
         }
     }
 
     public void OnButtonClick_left(View view) {
-        if (playview.isInitgame() && !playview.control_left())
+        if (!playview.control_left())
             makeToast("left faild", Toast.LENGTH_SHORT);
     }
 
     public void OnButtonClick_right(View view) {
-        if (playview.isInitgame() && !playview.control_right())
+        if (!playview.control_right())
             makeToast("right faild", Toast.LENGTH_SHORT);
     }
+
     public void OnButtonClick_start(View view){
         if("开始".contentEquals(game.getText())){
-            if(!playview.isInitgame())
-                playview.initGame(20);
+            playview.initGame(20);
             game.setText("暂停");
             playview.continueGame();
             Log.e(TAG, "OnButtonClick_start: 开始" );
@@ -96,14 +97,24 @@ public class MainActivity extends AppCompatActivity {
         if("暂停".contentEquals(game.getText())) {
             game.setText("继续");
             playview.pauseGame();
+            gameRestart.setEnabled(true);
             Log.e(TAG, "OnButtonClick_start: 暂停" );
             return;
         }
         if("继续".contentEquals(game.getText())){
             game.setText("暂停");
             playview.continueGame();
+            gameRestart.setEnabled(false);
             Log.e(TAG, "OnButtonClick_start: 继续" );
         }
+    }
+
+    public void OnButtonClick_restart(View view) {
+        if(!playview.isGameStop()) return;
+        playview.initGame(20);
+        game.setText("暂停");
+        playview.continueGame();
+        gameRestart.setEnabled(false);
     }
 
     @Override
@@ -116,10 +127,10 @@ public class MainActivity extends AppCompatActivity {
     private Runnable runnable = new Runnable() {
         public void run() {
             this.update();
-            handler.postDelayed(this, 1000);// 间隔120秒
+            handler.postDelayed(this, 1000);
         }
         void update() {
-            if(playview.isInitgame())
+            if(!playview.isGameStop())
                 preview.initGame(6,playview.getLastMode());
         }
     };
