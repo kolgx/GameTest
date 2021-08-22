@@ -8,10 +8,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import static android.content.ContentValues.TAG;
 
@@ -47,13 +45,13 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
                     case R.id.radioButton:
-                        playview.setSleepTime(2000);
+                        playview.setSleepTime(800);
                         break;
                     case R.id.radioButton2:
-                        playview.setSleepTime(1000);
+                        playview.setSleepTime(500);
                         break;
                     case R.id.radioButton3:
-                        playview.setSleepTime(500);
+                        playview.setSleepTime(200);
                         break;
                 }
             }
@@ -61,29 +59,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void makeToast(String string, int time) {
-        Toast.makeText(MainActivity.this, string, time).show();
-    }
-
     public void OnButtonClick_up(View view) {
         if (!playview.control_up())
-            makeToast("up faild", Toast.LENGTH_SHORT);
+            Log.e(TAG, "OnButtonClick_up: failed");
     }
 
     public void OnButtonClick_down(View view) {
         if (!playview.control_down()) {
-            makeToast("down faild", Toast.LENGTH_SHORT);
+            Log.e(TAG, "OnButtonClick_down: failed");
         }
     }
 
     public void OnButtonClick_left(View view) {
         if (!playview.control_left())
-            makeToast("left faild", Toast.LENGTH_SHORT);
+            Log.e(TAG, "OnButtonClick_left: failed");
     }
 
     public void OnButtonClick_right(View view) {
         if (!playview.control_right())
-            makeToast("right faild", Toast.LENGTH_SHORT);
+            Log.e(TAG, "OnButtonClick_right: failed");
     }
 
     public void OnButtonClick_start(View view){
@@ -91,26 +85,23 @@ public class MainActivity extends AppCompatActivity {
             playview.initGame(20);
             game.setText("暂停");
             playview.continueGame();
-            Log.e(TAG, "OnButtonClick_start: 开始" );
             return;
         }
         if("暂停".contentEquals(game.getText())) {
             game.setText("继续");
             playview.pauseGame();
             gameRestart.setEnabled(true);
-            Log.e(TAG, "OnButtonClick_start: 暂停" );
             return;
         }
         if("继续".contentEquals(game.getText())){
             game.setText("暂停");
             playview.continueGame();
             gameRestart.setEnabled(false);
-            Log.e(TAG, "OnButtonClick_start: 继续" );
         }
     }
 
     public void OnButtonClick_restart(View view) {
-        if(!playview.isGameStop()) return;
+        if(playview.isNotGameStop()) return;
         playview.initGame(20);
         game.setText("暂停");
         playview.continueGame();
@@ -130,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
             handler.postDelayed(this, 1000);
         }
         void update() {
-            if(!playview.isGameStop())
+            if(playview.isNotGameStop())
                 preview.initGame(6,playview.getLastMode());
         }
     };

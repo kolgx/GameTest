@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Button;
@@ -49,7 +50,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
     private Button mButton;
     private float mGridUnit;
 
-    private final AtomicLong sleepTime = new AtomicLong(1000);
+    private final AtomicLong sleepTime = new AtomicLong(500);
     private final AtomicBoolean mIsPaused = new AtomicBoolean(true);
 
     Context context;
@@ -100,8 +101,8 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
         this.mButton = mButton;
     }
 
-    public boolean isGameStop() {
-        return mIsPaused.get();
+    public boolean isNotGameStop() {
+        return !mIsPaused.get();
     }
 
     public int[][] getLastMode(){
@@ -164,16 +165,34 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
         // draw n-by-n grid
         for (int row = 0; row < num; row++) {
             for (int col = 0; col < num; col++) {
-                if (livingStatus[row][col] == 0) {
-                    continue;
-                } else if (livingStatus[row][col] == 1) {
-                    paint.setColor(Color.WHITE);
-                } else if (livingStatus[row][col] == 2) {
-                    paint.setColor(Color.CYAN);
-                } else if (livingStatus[row][col] == 3) {
-                    paint.setColor(Color.GREEN);
-                } else {
-                    paint.setColor(Color.YELLOW);
+                switch (livingStatus[row][col]) {
+                    case 0:
+                        continue;
+                    case 1:
+                        paint.setColor(Color.WHITE);
+                        break;
+                    case 2:
+                        paint.setColor(Color.CYAN);
+                        break;
+                    case 3:
+                        paint.setColor(Color.GREEN);
+                        break;
+                    case 4:
+                        paint.setColor(Color.RED);
+                        break;
+                    case 5:
+                        paint.setColor(Color.BLUE);
+                        break;
+                    case 6:
+                        paint.setColor(Color.MAGENTA);
+                        break;
+                    case 7:
+                        paint.setColor(Color.YELLOW);
+                        break;
+                    default:
+                        Log.e(TAG, "draw: "+livingStatus[row][col]);
+                        paint.setColor(Color.GRAY);
+                        break;
                 }
                 filledSquare(canvas, paint, (col + 0.5f) * mGridUnit,
                         (row + 0.5f) * mGridUnit, 0.45f * mGridUnit);
@@ -202,10 +221,10 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
         @Override
         public void run() {
 
-            Canvas canvas = null;
+            Canvas canvas;
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
-            boolean autoStop = false;
+            boolean autoStop;
 
             while (!mIsPaused.get()) {
                 try {
@@ -220,7 +239,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
                         }
                         mHolder.unlockCanvasAndPost(canvas);
                     }
-                    if(autoStop) mIsPaused.set(autoStop);
+                    if(autoStop) mIsPaused.set(true);
                     Thread.sleep(sleepTime.get());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -230,7 +249,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
     }
 
     public boolean control_up() {
-        Canvas canvas = null;
+        Canvas canvas;
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         boolean statly = false;
@@ -251,7 +270,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
     }
 
     public boolean control_down() {
-        Canvas canvas = null;
+        Canvas canvas;
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         boolean statly = false;
@@ -272,7 +291,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
     }
 
     public boolean control_left() {
-        Canvas canvas = null;
+        Canvas canvas;
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         boolean statly = false;
@@ -293,7 +312,7 @@ public class DrawingBoardSurfaceView extends SurfaceView implements SurfaceHolde
     }
 
     public boolean control_right() {
-        Canvas canvas = null;
+        Canvas canvas;
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         boolean statly = false;

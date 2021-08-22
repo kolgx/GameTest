@@ -8,7 +8,6 @@ import java.util.Random;
 import static android.content.ContentValues.TAG;
 
 public class Creatures {
-    private static final double INTIAL_SURVIVAL_RATE = 0.50;
 
     private int num = 100;//边长
     private int[][] background;//背景图
@@ -85,10 +84,10 @@ public class Creatures {
     public boolean gameDown() {
         y++;
         if (foremodeCreate()&&mapFusion(foreground, background)) {
-            Log.e(TAG, "gameDown: 坐标: "+x+":"+y+":"+r+" "+num+":"+StatusFactory.getNUM() );
+//            Log.e(TAG, "gameDown: 坐标: "+x+":"+y+":"+r+" "+num+":"+StatusFactory.getNUM() );
             return true;
         }
-        Log.e(TAG, "gameDown: 坐标: "+x+":"+y+":"+r+" "+num+":"+StatusFactory.getNUM()  );
+//        Log.e(TAG, "gameDown: 坐标: "+x+":"+y+":"+r+" "+num+":"+StatusFactory.getNUM()  );
         return foremodeEnd();
     }
 
@@ -245,7 +244,7 @@ public class Creatures {
         int[][] temporary = new int[max][max];
         for (int i = 0; i < max; i++) {
             for (int j = 0; j < max; j++) {
-                if (back[i][j] == fore[i][j] && back[i][j] != 0) {
+                if (fore[i][j] !=0 && back[i][j] != 0) {
                     return false;
                 }
                 temporary[i][j] = fore[i][j] + back[i][j];
